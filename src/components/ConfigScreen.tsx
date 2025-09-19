@@ -113,14 +113,16 @@ const ConfigScreen: React.FC<ConfigScreenProps> = ({ config, onConfigChange, onS
             <h2 className="text-xl font-semibold hebrew-text text-right">
               רוצים לשמוע את המילה? 🔊
             </h2>
-            <div className="flex items-center justify-center gap-4 p-4 rounded-xl bg-muted/50">
-              <span className="text-lg">לא</span>
+            <div className="flex items-center justify-center gap-4 p-4 rounded-xl bg-muted/50 rtl">
+              <span className="text-lg hebrew-text font-medium">כן</span>
               <Switch
+                id="audio-hint-toggle"
                 checked={config.audioHint}
                 onCheckedChange={handleAudioHintChange}
                 className="scale-125"
+                aria-label="הפעלת רמז שמע"
               />
-              <span className="text-lg">כן</span>
+              <span className="text-lg hebrew-text font-medium">לא</span>
             </div>
           </div>
 
