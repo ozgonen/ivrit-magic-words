@@ -19,7 +19,6 @@ export const hebrewWordsDatabase: GameWord[] = [
   { text: 'שֹׁר', nikud: ['holam'], emoji: '🐂', difficulty: 2 },
   { text: 'עֵז', nikud: ['tzere'], emoji: '🐐', difficulty: 2 },
   { text: 'גַּן', nikud: ['patach'], emoji: '🌳', difficulty: 2 },
-  { text: 'דַּר', nikud: ['patach'], emoji: '🚪', difficulty: 2 },
   { text: 'חַם', nikud: ['patach'], emoji: '🔥', difficulty: 2 },
   { text: 'קַר', nikud: ['patach'], emoji: '❄️', difficulty: 2 },
   { text: 'טוֹב', nikud: ['holam'], emoji: '👍', difficulty: 2 },
@@ -290,10 +289,14 @@ export function getRandomEmojis(correctEmoji: string, count: number = 2): string
   return shuffled.slice(0, count);
 }
 
-export function getWordsForLevel(level: number, selectedNikud: Nikud[], wordLength: number): GameWord[] {
+export function getWordsForLevel(level: number, selectedNikud: Nikud[], startingWordLength: number): GameWord[] {
+  // Level progression: each level uses longer words
+  // Level 1: use starting word length, Level 2: starting + 1, etc.
+  const targetWordLength = Math.min(startingWordLength + level - 1, 4);
+  
   const filteredWords = hebrewWordsDatabase.filter(word => {
-    // Check if word matches selected word length
-    const matchesLength = word.difficulty === wordLength;
+    // Check if word matches target word length for this level
+    const matchesLength = word.difficulty === targetWordLength;
     
     // Check if word uses only selected nikud
     const usesSelectedNikud = word.nikud.every(n => selectedNikud.includes(n));
@@ -301,6 +304,8 @@ export function getWordsForLevel(level: number, selectedNikud: Nikud[], wordLeng
     return matchesLength && usesSelectedNikud;
   });
 
+  console.log(`Level ${level}: Using ${targetWordLength}-letter words, found ${filteredWords.length} matches`);
+  
   // Shuffle the words to prevent repetitive patterns!
   return shuffleArray([...filteredWords]);
 }
