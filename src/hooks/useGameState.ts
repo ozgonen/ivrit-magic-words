@@ -5,7 +5,6 @@ import { getWordsForLevel } from '@/data/hebrewWords';
 const initialConfig: GameConfig = {
   selectedNikud: ['patach', 'kamatz'],
   wordLength: 2,
-  audioHint: true,
 };
 
 const initialState: GameState = {

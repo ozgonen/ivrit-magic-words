@@ -61,7 +61,6 @@ const HebrewReadingGame: React.FC = () => {
           score={gameState.score}
           onAnswer={answerQuestion}
           onNextLevel={nextLevel}
-          audioHint={gameState.config.audioHint}
         />
       );
 
@@ -74,7 +73,6 @@ const HebrewReadingGame: React.FC = () => {
           score={gameState.score}
           onAnswer={answerQuestion}
           onNextLevel={nextLevel}
-          audioHint={gameState.config.audioHint}
         />
       );
 

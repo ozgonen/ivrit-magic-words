@@ -10,7 +10,6 @@ export interface GameWord {
 export interface GameConfig {
   selectedNikud: Nikud[];
   wordLength: number;
-  audioHint: boolean;
 }
 
 export interface GameState {

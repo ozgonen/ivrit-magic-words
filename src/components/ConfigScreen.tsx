@@ -34,9 +34,6 @@ const ConfigScreen: React.FC<ConfigScreenProps> = ({ config, onConfigChange, onS
     onConfigChange({ ...config, wordLength: length });
   };
 
-  const handleAudioHintChange = (enabled: boolean) => {
-    onConfigChange({ ...config, audioHint: enabled });
-  };
 
   const canStartGame = config.selectedNikud.length > 0;
 
@@ -51,7 +48,7 @@ const ConfigScreen: React.FC<ConfigScreenProps> = ({ config, onConfigChange, onS
               className="w-32 h-32 mx-auto rounded-full object-cover shadow-fun animate-float mb-4"
             />
           </div>
-          <h1 className="text-4xl font-bold mb-2 gradient-primary bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold mb-2 gradient-primary bg-clip-text ">
             🎯 משחק הקריאה שלי
           </h1>
           <p className="text-lg text-muted-foreground">
@@ -108,23 +105,7 @@ const ConfigScreen: React.FC<ConfigScreenProps> = ({ config, onConfigChange, onS
             </div>
           </div>
 
-          {/* Audio Hint Toggle */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold hebrew-text text-right">
-              רוצים לשמוע את המילה? 🔊
-            </h2>
-            <div className="flex items-center justify-center gap-4 p-4 rounded-xl bg-muted/50 rtl">
-              <span className="text-lg hebrew-text font-medium">כן</span>
-              <Switch
-                id="audio-hint-toggle"
-                checked={config.audioHint}
-                onCheckedChange={handleAudioHintChange}
-                className="scale-125"
-                aria-label="הפעלת רמז שמע"
-              />
-              <span className="text-lg hebrew-text font-medium">לא</span>
-            </div>
-          </div>
+   
 
           {/* Start Game Button */}
           <div className="text-center pt-6">

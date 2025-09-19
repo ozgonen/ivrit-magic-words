@@ -12,7 +12,6 @@ interface GameScreenProps {
   score: number;
   onAnswer: (correct: boolean) => void;
   onNextLevel: () => void;
-  audioHint: boolean;
 }
 
 const GameScreen: React.FC<GameScreenProps> = ({
@@ -22,7 +21,6 @@ const GameScreen: React.FC<GameScreenProps> = ({
   score,
   onAnswer,
   onNextLevel,
-  audioHint
 }) => {
   const [options, setOptions] = useState<WordOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -51,13 +49,16 @@ const GameScreen: React.FC<GameScreenProps> = ({
     setIsCorrect(option.isCorrect);
     setShowResult(true);
 
+    // Play audio after choice is made
+    playAudio();
+
     setTimeout(() => {
       onAnswer(option.isCorrect);
     }, 1500);
   };
 
-  const playAudioHint = () => {
-    if (audioHint && 'speechSynthesis' in window) {
+  const playAudio = () => {
+    if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(currentWord.text);
       utterance.lang = 'he-IL';
       utterance.rate = 0.7;
@@ -97,16 +98,6 @@ const GameScreen: React.FC<GameScreenProps> = ({
             <div className="text-6xl font-bold hebrew-text mb-4 animate-bounce-in">
               {currentWord.text}
             </div>
-            {audioHint && (
-              <Button
-                onClick={playAudioHint}
-                variant="outline"
-                size="lg"
-                className="btn-bounce"
-              >
-                🔊 תשמעו את המילה
-              </Button>
-            )}
           </div>
           
           <p className="text-xl text-muted-foreground mb-8">
