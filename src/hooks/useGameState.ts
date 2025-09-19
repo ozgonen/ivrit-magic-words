@@ -23,6 +23,7 @@ const STORAGE_KEY = 'hebrew-reading-game-state';
 export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>(initialState);
   const [currentWords, setCurrentWords] = useState<GameWord[]>([]);
+  const [usedWordIndices, setUsedWordIndices] = useState<Set<number>>(new Set());
 
   // Load saved state on mount
   useEffect(() => {
@@ -60,11 +61,14 @@ export const useGameState = () => {
   const startGame = () => {
     const words = getWordsForLevel(1, gameState.config.selectedNikud);
     setCurrentWords(words);
+    setUsedWordIndices(new Set());
+    const randomStartIndex = words.length > 0 ? Math.floor(Math.random() * words.length) : 0;
+    setUsedWordIndices(prev => new Set(prev).add(randomStartIndex));
     setGameState(prev => ({
       ...prev,
       gameMode: 'playing',
       currentLevel: 1,
-      currentWordIndex: 0,
+      currentWordIndex: randomStartIndex,
       correctAnswers: 0,
       totalAnswers: 0,
     }));
@@ -87,8 +91,25 @@ export const useGameState = () => {
         };
       }
 
-      // Move to next word
-      const nextWordIndex = (prev.currentWordIndex + 1) % currentWords.length;
+      // Choose a RANDOM word that we haven't used yet!
+      let nextWordIndex: number;
+      let attempts = 0;
+      const maxAttempts = currentWords.length * 2;
+      
+      do {
+        nextWordIndex = Math.floor(Math.random() * currentWords.length);
+        attempts++;
+      } while (usedWordIndices.has(nextWordIndex) && attempts < maxAttempts);
+
+      console.log('Selecting word:', currentWords[nextWordIndex]?.text, 'Used indices:', usedWordIndices.size, '/', currentWords.length);
+
+      // If we've used all words, reset the used words set
+      if (usedWordIndices.size >= currentWords.length - 1) {
+        console.log('Resetting used words - used all available words');
+        setUsedWordIndices(new Set([nextWordIndex]));
+      } else {
+        setUsedWordIndices(prev => new Set(prev).add(nextWordIndex));
+      }
       
       return {
         ...prev,
@@ -114,10 +135,13 @@ export const useGameState = () => {
     }
 
     setCurrentWords(words);
+    setUsedWordIndices(new Set());
+    const randomStartIndex = Math.floor(Math.random() * words.length);
+    setUsedWordIndices(prev => new Set(prev).add(randomStartIndex));
     setGameState(prev => ({
       ...prev,
       currentLevel: nextLevelNum,
-      currentWordIndex: 0,
+      currentWordIndex: randomStartIndex,
       correctAnswers: 0,
       gameMode: 'playing',
     }));
@@ -129,6 +153,7 @@ export const useGameState = () => {
       config: gameState.config, // Keep the configuration
     });
     setCurrentWords([]);
+    setUsedWordIndices(new Set());
   };
 
   const backToConfig = () => {
