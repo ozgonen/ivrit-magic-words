@@ -45,10 +45,10 @@ export const useGameState = () => {
   // Update available words when level or config changes
   useEffect(() => {
     if (gameState.gameMode === 'playing') {
-      const words = getWordsForLevel(gameState.currentLevel, gameState.config.selectedNikud);
+      const words = getWordsForLevel(gameState.currentLevel, gameState.config.selectedNikud, gameState.config.wordLength);
       setCurrentWords(words);
     }
-  }, [gameState.currentLevel, gameState.config.selectedNikud, gameState.gameMode]);
+  }, [gameState.currentLevel, gameState.config.selectedNikud, gameState.config.wordLength, gameState.gameMode]);
 
   const updateConfig = (config: GameConfig) => {
     setGameState(prev => ({
@@ -58,7 +58,7 @@ export const useGameState = () => {
   };
 
   const startGame = () => {
-    const words = getWordsForLevel(1, gameState.config.selectedNikud);
+    const words = getWordsForLevel(1, gameState.config.selectedNikud, gameState.config.wordLength);
     setCurrentWords(words);
     setUsedWordIndices(new Set());
     const randomStartIndex = words.length > 0 ? Math.floor(Math.random() * words.length) : 0;
@@ -122,7 +122,7 @@ export const useGameState = () => {
 
   const nextLevel = () => {
     const nextLevelNum = gameState.currentLevel + 1;
-    const words = getWordsForLevel(nextLevelNum, gameState.config.selectedNikud);
+    const words = getWordsForLevel(nextLevelNum, gameState.config.selectedNikud, gameState.config.wordLength);
     
     // Check if there are words for the next level
     if (words.length === 0) {

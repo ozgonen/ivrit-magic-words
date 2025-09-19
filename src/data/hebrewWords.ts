@@ -293,18 +293,15 @@ export function getRandomEmojis(correctEmoji: string, count: number = 2): string
   return shuffled.slice(0, count);
 }
 
-export function getWordsForLevel(level: number, selectedNikud: Nikud[]): GameWord[] {
-  // Filter words by difficulty (word length based on level)
-  const targetLength = Math.min(2 + level - 1, 4);
-  
+export function getWordsForLevel(level: number, selectedNikud: Nikud[], wordLength: number): GameWord[] {
   const filteredWords = hebrewWordsDatabase.filter(word => {
-    // Check if word matches target difficulty
-    const matchesDifficulty = word.difficulty === targetLength;
+    // Check if word matches selected word length
+    const matchesLength = word.difficulty === wordLength;
     
     // Check if word uses only selected nikud
     const usesSelectedNikud = word.nikud.every(n => selectedNikud.includes(n));
     
-    return matchesDifficulty && usesSelectedNikud;
+    return matchesLength && usesSelectedNikud;
   });
 
   // Shuffle the words to prevent repetitive patterns!
