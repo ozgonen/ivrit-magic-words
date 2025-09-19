@@ -67,7 +67,6 @@ export const hebrewWordsDatabase: GameWord[] = [
   { text: 'סַל', nikud: ['patach'], emoji: '🧺', difficulty: 2 },
   { text: 'עֹל', nikud: ['holam'], emoji: '⛓️', difficulty: 2 },
   { text: 'פַּח', nikud: ['patach'], emoji: '🗑️', difficulty: 2 },
-  { text: 'צַו', nikud: ['patach'], emoji: '📜', difficulty: 2 },
   { text: 'קַו', nikud: ['patach'], emoji: '📏', difficulty: 2 },
   { text: 'רֹב', nikud: ['holam'], emoji: '🔢', difficulty: 2 },
   { text: 'אָז', nikud: ['kamatz'], emoji: '⏰', difficulty: 2 },
