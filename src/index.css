@@ -2,57 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Kids Hebrew Reading Game Design System - Colorful & Friendly */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Fun Background Colors */
+    --background: 220 60% 97%;
+    --foreground: 230 15% 15%;
 
+    /* Card Colors */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 230 15% 15%;
 
+    /* Popover Colors */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 230 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary Colors - Fun Orange */
+    --primary: 25 95% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 25 95% 55%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary Colors - Sweet Pink */
+    --secondary: 320 60% 85%;
+    --secondary-foreground: 320 40% 25%;
+    --secondary-hover: 320 60% 80%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Game Colors */
+    --success: 145 70% 50%;
+    --success-foreground: 0 0% 100%;
+    --error: 350 90% 60%;
+    --error-foreground: 0 0% 100%;
+    --warning: 45 95% 65%;
+    --warning-foreground: 45 40% 20%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Fun Colors for UI */
+    --fun-blue: 210 90% 65%;
+    --fun-green: 145 70% 55%;
+    --fun-purple: 260 70% 65%;
+    --fun-yellow: 50 95% 70%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Muted Colors */
+    --muted: 220 30% 92%;
+    --muted-foreground: 220 15% 45%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Accent Colors */
+    --accent: 260 70% 90%;
+    --accent-foreground: 260 40% 25%;
 
-    --radius: 0.5rem;
+    /* Border & Input */
+    --border: 220 30% 88%;
+    --input: 220 30% 92%;
+    --ring: 25 95% 60%;
 
-    --sidebar-background: 0 0% 98%;
+    /* Radius */
+    --radius: 1rem;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--fun-yellow)));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success)), hsl(var(--fun-green)));
+    --gradient-fun: linear-gradient(135deg, hsl(var(--fun-purple)), hsl(var(--fun-blue)));
+    --gradient-bg: linear-gradient(135deg, hsl(220 60% 97%), hsl(200 50% 95%));
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Shadows */
+    --shadow-fun: 0 8px 32px -8px hsl(var(--primary) / 0.3);
+    --shadow-card: 0 4px 20px -4px hsl(220 30% 80% / 0.4);
+    --shadow-button: 0 4px 14px -4px hsl(var(--primary) / 0.4);
 
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Animations */
+    --bounce-duration: 0.6s;
+    --wiggle-duration: 0.8s;
   }
 
   .dark {
@@ -100,6 +119,128 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    background: var(--gradient-bg);
   }
+}
+
+/* Custom Components & Animations for Kids Game */
+@layer components {
+  /* Fun Button Animations */
+  .btn-bounce {
+    @apply transform transition-all duration-300 ease-out;
+  }
+  
+  .btn-bounce:hover {
+    @apply scale-105 shadow-lg;
+    box-shadow: var(--shadow-button);
+  }
+  
+  .btn-bounce:active {
+    @apply scale-95;
+  }
+
+  /* Success Animation */
+  .success-wiggle {
+    animation: wiggle var(--wiggle-duration) ease-in-out;
+  }
+
+  /* Card Animations */
+  .game-card {
+    @apply transform transition-all duration-300 ease-out;
+    box-shadow: var(--shadow-card);
+  }
+  
+  .game-card:hover {
+    @apply scale-[1.02];
+    box-shadow: var(--shadow-fun);
+  }
+
+  /* Hebrew Text */
+  .hebrew-text {
+    @apply font-medium tracking-wide;
+    font-family: 'Segoe UI', 'Arial Unicode MS', sans-serif;
+    direction: rtl;
+    text-align: center;
+  }
+
+  /* Emoji Buttons */
+  .emoji-btn {
+    @apply transform transition-all duration-200 ease-out;
+  }
+  
+  .emoji-btn:hover {
+    @apply scale-110;
+  }
+  
+  .emoji-btn:active {
+    @apply scale-95;
+  }
+
+  /* Progress Elements */
+  .progress-star {
+    @apply transform transition-all duration-300 ease-out;
+  }
+  
+  .progress-star.filled {
+    animation: starPop 0.4s ease-out;
+  }
+}
+
+@layer utilities {
+  /* Custom Gradients */
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .gradient-success {
+    background: var(--gradient-success);
+  }
+  
+  .gradient-fun {
+    background: var(--gradient-fun);
+  }
+
+  /* Fun Shadows */
+  .shadow-fun {
+    box-shadow: var(--shadow-fun);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-button {
+    box-shadow: var(--shadow-button);
+  }
+
+  /* RTL Support */
+  .rtl {
+    direction: rtl;
+  }
+}
+
+/* Keyframe Animations */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes starPop {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 1; }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
