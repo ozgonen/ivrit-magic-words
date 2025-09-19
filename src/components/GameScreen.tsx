@@ -96,18 +96,14 @@ const GameScreen: React.FC<GameScreenProps> = ({
       <Card className="w-full max-w-2xl p-8 game-card bg-card/90 backdrop-blur-sm">
         {/* Word display */}
         <div className="text-center mb-12">
-          <div className="mb-6">
+          <div className="mb-14">
             <div className="text-6xl font-bold hebrew-text mb-4 animate-bounce-in">
               {currentWord.text}
             </div>
           </div>
           
-          <p className="text-xl text-muted-foreground mb-8">
-            איזה אימוג'י מתאים למילה?
-          </p>
-
           {/* Options */}
-          <div className="grid grid-cols-3 gap-6 max-w-md mx-auto">
+          <div className="grid grid-cols-3 gap-8 max-w-md mx-auto">
             {options.map((option, index) => (
               <Button
                 key={`${option.emoji}-${index}`}
@@ -181,7 +177,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <Card className="p-8 max-w-md mx-4 text-center animate-bounce-in">
             <div className="text-6xl mb-4">🏆</div>
-            <h2 className="text-3xl font-bold mb-2 gradient-success bg-clip-text text-transparent">
+            <h2 className="text-3xl font-bold mb-2 gradient-success bg-clip-text ">
               סיימתם רמה {level}!
             </h2>
             <p className="text-lg text-muted-foreground mb-6">

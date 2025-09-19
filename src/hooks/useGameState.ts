@@ -23,6 +23,8 @@ export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>(initialState);
   const [currentWords, setCurrentWords] = useState<GameWord[]>([]);
   const [usedWordIndices, setUsedWordIndices] = useState<Set<number>>(new Set());
+  const [correctlyAnsweredIndices, setCorrectlyAnsweredIndices] = useState<Set<number>>(new Set());
+  const [incorrectlyAnsweredIndices, setIncorrectlyAnsweredIndices] = useState<Set<number>>(new Set());
 
   // Load saved state on mount
   useEffect(() => {
@@ -61,6 +63,8 @@ export const useGameState = () => {
     const words = getWordsForLevel(1, gameState.config.selectedNikud, gameState.config.wordLength);
     setCurrentWords(words);
     setUsedWordIndices(new Set());
+    setCorrectlyAnsweredIndices(new Set());
+    setIncorrectlyAnsweredIndices(new Set());
     const randomStartIndex = words.length > 0 ? Math.floor(Math.random() * words.length) : 0;
     setUsedWordIndices(prev => new Set(prev).add(randomStartIndex));
     setGameState(prev => ({
@@ -74,6 +78,14 @@ export const useGameState = () => {
   };
 
   const answerQuestion = (correct: boolean) => {
+    // Track the current word's result
+    const currentWordIndex = gameState.currentWordIndex;
+    if (correct) {
+      setCorrectlyAnsweredIndices(prev => new Set(prev).add(currentWordIndex));
+    } else {
+      setIncorrectlyAnsweredIndices(prev => new Set(prev).add(currentWordIndex));
+    }
+
     setGameState(prev => {
       const newCorrectAnswers = correct ? prev.correctAnswers + 1 : prev.correctAnswers;
       const newScore = correct ? prev.score + 10 : prev.score;
@@ -90,25 +102,8 @@ export const useGameState = () => {
         };
       }
 
-      // Choose a RANDOM word that we haven't used yet!
-      let nextWordIndex: number;
-      let attempts = 0;
-      const maxAttempts = currentWords.length * 2;
-      
-      do {
-        nextWordIndex = Math.floor(Math.random() * currentWords.length);
-        attempts++;
-      } while (usedWordIndices.has(nextWordIndex) && attempts < maxAttempts);
-
-      console.log('Selecting word:', currentWords[nextWordIndex]?.text, 'Used indices:', usedWordIndices.size, '/', currentWords.length);
-
-      // If we've used all words, reset the used words set
-      if (usedWordIndices.size >= currentWords.length - 1) {
-        console.log('Resetting used words - used all available words');
-        setUsedWordIndices(new Set([nextWordIndex]));
-      } else {
-        setUsedWordIndices(prev => new Set(prev).add(nextWordIndex));
-      }
+      // Smart word selection: prioritize never-seen words, then incorrect words, avoid correct words
+      let nextWordIndex = selectNextWord();
       
       return {
         ...prev,
@@ -118,6 +113,47 @@ export const useGameState = () => {
         currentWordIndex: nextWordIndex,
       };
     });
+  };
+
+  // Smart word selection function
+  const selectNextWord = (): number => {
+    const availableIndices = Array.from({ length: currentWords.length }, (_, i) => i);
+    
+    // Priority 1: Never-seen words (not in usedWordIndices at all)
+    const neverSeenWords = availableIndices.filter(index => !usedWordIndices.has(index));
+    
+    // Priority 2: Incorrectly answered words (can repeat for practice)
+    const incorrectWords = availableIndices.filter(index => 
+      incorrectlyAnsweredIndices.has(index) && !correctlyAnsweredIndices.has(index)
+    );
+    
+    // Priority 3: All other words (including correct ones, as last resort)
+    const allOtherWords = availableIndices.filter(index => 
+      !neverSeenWords.includes(index) && !incorrectWords.includes(index)
+    );
+
+    let candidateWords: number[] = [];
+    
+    if (neverSeenWords.length > 0) {
+      candidateWords = neverSeenWords;
+      console.log('Selecting from never-seen words:', neverSeenWords.length, 'available');
+    } else if (incorrectWords.length > 0) {
+      candidateWords = incorrectWords;
+      console.log('Selecting from incorrect words for practice:', incorrectWords.length, 'available');
+    } else {
+      candidateWords = allOtherWords;
+      console.log('Selecting from all words (including correct ones):', allOtherWords.length, 'available');
+    }
+
+    // Pick random from candidate pool
+    const selectedIndex = candidateWords[Math.floor(Math.random() * candidateWords.length)];
+    
+    // Update tracking
+    setUsedWordIndices(prev => new Set(prev).add(selectedIndex));
+    
+    console.log('Selected word:', currentWords[selectedIndex]?.text, 'at index:', selectedIndex);
+    
+    return selectedIndex;
   };
 
   const nextLevel = () => {
@@ -135,6 +171,8 @@ export const useGameState = () => {
 
     setCurrentWords(words);
     setUsedWordIndices(new Set());
+    setCorrectlyAnsweredIndices(new Set());
+    setIncorrectlyAnsweredIndices(new Set());
     const randomStartIndex = Math.floor(Math.random() * words.length);
     setUsedWordIndices(prev => new Set(prev).add(randomStartIndex));
     setGameState(prev => ({
@@ -153,6 +191,8 @@ export const useGameState = () => {
     });
     setCurrentWords([]);
     setUsedWordIndices(new Set());
+    setCorrectlyAnsweredIndices(new Set());
+    setIncorrectlyAnsweredIndices(new Set());
   };
 
   const backToConfig = () => {
