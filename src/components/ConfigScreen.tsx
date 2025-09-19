@@ -15,7 +15,7 @@ const nikudOptions: { value: Nikud; label: string; example: string }[] = [
   { value: 'patach', label: 'פַּתַח', example: 'בַּת' },
   { value: 'kamatz', label: 'קָמָץ', example: 'אָב' },
   { value: 'hirik', label: 'חִירִיק', example: 'בִּית' },
-  { value: 'shurek', label: 'שׁוּרֶק', example: 'כּוּס' },
+  { value: 'shurek', label: 'שׁוּרֶק', example: 'סּוּס' },
   { value: 'segol', label: 'סֶגוֹל', example: 'כֶּלֶב' },
   { value: 'tzere', label: 'צֵירֵה', example: 'בֵּן' },
   { value: 'holam', label: 'חוֹלָם', example: 'בּוֹא' },
