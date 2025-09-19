@@ -99,7 +99,6 @@ export const hebrewWordsDatabase: GameWord[] = [
   { text: 'קָם', nikud: ['kamatz'], emoji: '🧍', difficulty: 2 },
   { text: 'רָם', nikud: ['kamatz'], emoji: '📈', difficulty: 2 },
   { text: 'שָׁט', nikud: ['kamatz'], emoji: '🛶', difficulty: 2 },
-  { text: 'תָּר', nikud: ['kamatz'], emoji: '🔍', difficulty: 2 },
 
   // 3 letters - MORE variety
   { text: 'בַּיִת', nikud: ['patach', 'hirik'], emoji: '🏠', difficulty: 3 },

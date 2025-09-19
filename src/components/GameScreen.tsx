@@ -12,6 +12,7 @@ interface GameScreenProps {
   score: number;
   onAnswer: (correct: boolean) => void;
   onNextLevel: () => void;
+  onBackToConfig: () => void;
 }
 
 const GameScreen: React.FC<GameScreenProps> = ({
@@ -21,6 +22,7 @@ const GameScreen: React.FC<GameScreenProps> = ({
   score,
   onAnswer,
   onNextLevel,
+  onBackToConfig,
 }) => {
   const [options, setOptions] = useState<WordOption[]>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -163,6 +165,16 @@ const GameScreen: React.FC<GameScreenProps> = ({
           )}
         </div>
       </Card>
+
+      {/* Configuration Button - Bottom Left */}
+      <Button
+        onClick={onBackToConfig}
+        variant="outline"
+        size="sm"
+        className="fixed bottom-4 left-4 z-10 btn-bounce bg-card/90 backdrop-blur-sm border-muted hover:bg-muted/50"
+      >
+        ⚙️ הגדרות
+      </Button>
 
       {/* Level complete message */}
       {progress >= 10 && (
